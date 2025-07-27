@@ -1,7 +1,6 @@
-// client-mobile/src/features/auth/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // שינוי 1
 import { User } from './authTypes';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface AuthState {
   user: User | null;
@@ -9,6 +8,7 @@ interface AuthState {
   isLoggedIn: boolean;
 }
 
+// שינוי 2: אתחול מצב אסינכרוני
 const initialState: AuthState = {
   user: null,
   token: null,
@@ -23,15 +23,17 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isLoggedIn = true;
-      AsyncStorage.setItem('token', action.payload.token);
-      AsyncStorage.setItem('currentUser', JSON.stringify(action.payload.user));
+      // שינוי 3: שמירה באמצעות AsyncStorage
+      AsyncStorage.setItem("currentUser", JSON.stringify(action.payload.user));
+      AsyncStorage.setItem("token", action.payload.token);
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isLoggedIn = false;
+      // שינוי 4: הסרה באמצעות AsyncStorage
       AsyncStorage.removeItem('token');
-      AsyncStorage.removeItem('currentUser');
+      AsyncStorage.removeItem("currentUser");
     },
   },
 });
