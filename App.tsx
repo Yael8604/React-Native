@@ -1,39 +1,45 @@
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.tsx to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
-
-
-// App.tsx
-import React from 'react';
-import { Provider } from 'react-redux';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import store from './src/app/store';
-import JobsScreen from './src/features/jobs/JobsScreen';
-
-export default function App() {
+import { logout, setCredentials } from './src/features/auth/authSlice';
+// אפשר להגדיר טיפוס לרכיב, אבל ברוב המקרים React.FC מספיק
+const AppWrapper: React.FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const loadInitialState = async (): Promise<void> => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        const currentUserString = await AsyncStorage.getItem('currentUser');
+        if (token && currentUserString) {
+          const currentUser = JSON.parse(currentUserString);
+          dispatch(setCredentials({ user: currentUser, token }));
+        } else {
+          dispatch(logout());
+        }
+      } catch (err) {
+        console.warn('Failed to load initial state:', err);
+        dispatch(logout());
+      }
+    };
+    loadInitialState();
+  }, [dispatch]);
+  return null;
+};
+const App: React.FC = () => {
   return (
     <Provider store={store}>
-      {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>ברוכה הבאה לאפליקציה!</Text>
-      </View> */}
-      <JobsScreen/>
+      <AppWrapper />
+      <View>
+        <Text>vcgduwelkcv</Text>
+      </View>
     </Provider>
   );
-}
+};
+
+
+
+
+
