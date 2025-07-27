@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // שינ�
 const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://10.0.0.9/api",
+    baseUrl: "http://10.0.0.9:3001/api",
+
     prepareHeaders: async (headers) => { // שינוי 2: הוספת async
       const token = await AsyncStorage.getItem("token"); // שינוי 3
       if (token) {
@@ -32,8 +33,5 @@ const apiSlice = createApi({
   endpoints: (builder) => ({}),
 });
 export default apiSlice;
-
-
-
 
 

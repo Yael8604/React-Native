@@ -1,3 +1,4 @@
+ 
 // // client-mobile/src/screens/JobsScreen.tsx
 // import React from 'react';
 // import { View, Text, FlatList } from 'react-native';
@@ -25,3 +26,4 @@
 // };
 
 // export default JobsScreen;
+

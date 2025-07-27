@@ -11,7 +11,9 @@ const store = configureStore({
     reducer: {
         // [jobsSlice.name]: jobsSlice.reducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
+
         [coursesSlice.name]: coursesSlice.reducer,
+
         auth: authReducer,
         [authApi.reducerPath]: authApi.reducer,
         // projects: projectsSlice,
@@ -26,8 +28,5 @@ const store = configureStore({
 export default store;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-
-
 
 
